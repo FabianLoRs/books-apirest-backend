@@ -2,8 +2,8 @@
 
 ## Technologies Used
 
-Java 17.
-Spring 3.
-MariaDB.
-Swagger.
+Java 17. \
+Spring 3. \
+MariaDB. \
+Swagger. \
 JUnit and Mockito.

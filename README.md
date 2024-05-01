@@ -6,6 +6,6 @@ This is a straightforward backend application developed using Java and Spring. T
 
 Java 17. \
 Spring 3. \
-MariaDB. \
+PostgreSQL. \
 Swagger. \
 JUnit and Mockito.

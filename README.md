@@ -1,6 +1,6 @@
 # A simple Spring Boot based REST API for books.
 
-This is a straightforward backend application developed using Java and Spring. The purpose of this application is to save books in a database.
+This is a backend application developed using Java and Spring. The purpose of this application is to show books saved in a database.
 
 ## Technologies Used
 

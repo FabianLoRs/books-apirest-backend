@@ -2,7 +2,7 @@
 
 This is a backend application developed using Java and Spring. Its purpose is to show books saved in a database.
 
-## Technologies Used
+## Technologies Used:
 
 Java 17. \
 Spring 3. \

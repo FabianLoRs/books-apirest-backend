@@ -2,9 +2,8 @@ package com.company.books.backend.examples.junit;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import org.junit.jupiter.api.Test;
-
+@SuppressWarnings("all")
 public class AssertTrueFalseTest {
     
     @Test

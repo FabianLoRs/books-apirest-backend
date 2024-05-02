@@ -1,0 +1,9 @@
+com\company\books\backend\controllers\CategoryRestControllerTest.class
+com\company\books\backend\BooksApirestApplicationTests.class
+com\company\books\backend\examples\junit\AssertNotEqualsTest.class
+com\company\books\backend\examples\junit\AssertArrayEqualsTest.class
+com\company\books\backend\examples\junit\AssertEqualsTest.class
+com\company\books\backend\examples\junit\CalculatorTest.class
+com\company\books\backend\service\CategoryServiceImplTest.class
+com\company\books\backend\examples\junit\AssertTrueFalseTest.class
+com\company\books\backend\examples\junit\Calculator.class

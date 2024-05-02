@@ -1,4 +1,4 @@
-# A simple Spring Boot-based REST API for books.
+# A simple Spring Boot based REST API for books.
 
 This is a straightforward backend application developed using Java and Spring. The purpose of this application is to save books in a database.
 
@@ -6,6 +6,6 @@ This is a straightforward backend application developed using Java and Spring. T
 
 Java 17. \
 Spring 3. \
-PostgreSQL. \
+PostgreSQL 16. \
 Swagger. \
 JUnit and Mockito.

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ConfigSecurity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">books-apirest</a> &gt; <a href="index.source.html" class="el_package">com.company.books.backend.config</a> &gt; <span class="el_source">ConfigSecurity.java</span></div><h1>ConfigSecurity.java</h1><pre class="source lang-java linenums">package com.company.books.backend.config;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+/*import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;*/
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
+import org.springframework.security.provisioning.UserDetailsManager;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.company.books.backend.filter.JwtReqFilter;
+
+@Configuration
+<span class="fc" id="L26">public class ConfigSecurity {</span>
+
+    @Autowired
+    @Lazy
+    private JwtReqFilter jwtReqFilter;
+
+    @Bean
+    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+<span class="fc" id="L34">        return new JdbcUserDetailsManager(dataSource);</span>
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+<span class="fc" id="L39">        http.authorizeHttpRequests(configure -&gt; {</span>
+<span class="fc" id="L40">            configure</span>
+<span class="fc" id="L41">                    .requestMatchers(HttpMethod.GET, &quot;/v1/books&quot;).hasRole(&quot;Employee&quot;)</span>
+<span class="fc" id="L42">                    .requestMatchers(HttpMethod.GET, &quot;/v1/books/**&quot;).hasRole(&quot;Employee&quot;)</span>
+<span class="fc" id="L43">                    .requestMatchers(HttpMethod.POST, &quot;/v1/books&quot;).hasRole(&quot;Manager&quot;)</span>
+<span class="fc" id="L44">                    .requestMatchers(HttpMethod.PUT, &quot;/v1/books/**&quot;).hasRole(&quot;Manager&quot;)</span>
+<span class="fc" id="L45">                    .requestMatchers(HttpMethod.DELETE, &quot;/v1/books/**&quot;).hasRole(&quot;Manager&quot;)</span>
+                    //.requestMatchers(HttpMethod.GET, &quot;/v1/categories&quot;).hasRole(&quot;Employee&quot;)
+<span class="fc" id="L47">                    .requestMatchers(HttpMethod.GET, &quot;/v1/categories/**&quot;).hasRole(&quot;Employee&quot;)</span>
+<span class="fc" id="L48">                    .requestMatchers(HttpMethod.POST, &quot;/v1/categories&quot;).hasRole(&quot;Manager&quot;)</span>
+<span class="fc" id="L49">                    .requestMatchers(HttpMethod.PUT, &quot;/v1/categories/**&quot;).hasRole(&quot;Manager&quot;)</span>
+<span class="fc" id="L50">                    .requestMatchers(HttpMethod.DELETE, &quot;/v1/categories/**&quot;).hasRole(&quot;Manager&quot;)</span>
+<span class="fc" id="L51">                    .requestMatchers(&quot;/v1/categories&quot;, &quot;/v1/authenticate&quot;, &quot;/v3/api-docs/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/swagger-ui.html&quot;)</span>
+<span class="fc" id="L52">                    .permitAll();</span>
+<span class="fc" id="L53">        })</span>
+<span class="fc" id="L54">                .addFilterBefore(jwtReqFilter, UsernamePasswordAuthenticationFilter.class)</span>
+<span class="fc" id="L55">                .sessionManagement((session) -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));</span>
+
+<span class="fc" id="L57">        http.httpBasic(Customizer.withDefaults());</span>
+
+<span class="fc" id="L59">        http.csrf(csrf -&gt; csrf.disable());</span>
+
+<span class="fc" id="L61">        return http.build();</span>
+    }
+
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
+<span class="fc" id="L67">        return authenticationConfiguration.getAuthenticationManager();</span>
+    }
+
+    /*
+     * @Bean
+     * public InMemoryUserDetailsManager userDetailsManager() {
+     * 
+     * UserDetails firstUser = User.builder()
+     * .username(&quot;firstUser&quot;)
+     * .password(&quot;{noop}hola.123&quot;)
+     * .roles(&quot;Employee&quot;)
+     * .build();
+     * 
+     * UserDetails secondUser = User.builder()
+     * .username(&quot;secondUser&quot;)
+     * .password(&quot;{noop}hola.123&quot;)
+     * .roles(&quot;Employee&quot;, &quot;Senior&quot;)
+     * .build();
+     * 
+     * UserDetails thirdUser = User.builder()
+     * .username(&quot;thirdUser&quot;)
+     * .password(&quot;{noop}hola.123&quot;)
+     * .roles(&quot;Employee&quot;,&quot;Manager&quot;)
+     * .build();
+     * return new InMemoryUserDetailsManager(firstUser, secondUser, thirdUser);
+     * 
+     * }
+     */
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

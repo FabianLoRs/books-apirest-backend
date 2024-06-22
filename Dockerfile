@@ -4,7 +4,7 @@
 
 FROM openjdk:17.0.1-jdk-slim
 COPY target/books-apirest-0.0.1-SNAPSHOT.jar apibooks.jar
-# EXPOSE 8080
+EXPOSE 8080
 
 ENTRYPOINT ["java","-jar","apibooks.jar"]
 
